@@ -1,16 +1,16 @@
 package com.andrey.appviewusers.retrofit
 
-import com.andrey.appviewusers.interfeces.ApiService
 import retrofit2.Retrofit
-import retrofit2.create
+import retrofit2.converter.gson.GsonConverterFactory
 
 object RetrofitClient {
     private var retrofit: Retrofit? = null
 
-    fun getClient(baseUrl: String) : Retrofit {
-        if (retrofit == null){
+    fun getClient(baseUrl: String): Retrofit {
+        if (retrofit == null) {
             retrofit = Retrofit.Builder()
                 .baseUrl(baseUrl)
+                .addConverterFactory(GsonConverterFactory.create())
                 .build()
         }
         return retrofit!!

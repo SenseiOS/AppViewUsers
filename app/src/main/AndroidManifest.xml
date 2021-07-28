@@ -2,6 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.andrey.appviewusers">
 
+    <uses-permission android:name="android.permission.INTERNET"/>
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -10,14 +11,14 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AppViewUsers">
 
-        <activity android:name=".activities.InfoUser"
-            android:parentActivityName=".activities.MainActivity">
+        <activity android:name="com.andrey.appviewusers.ui.activities.InfoUser"
+            android:parentActivityName="com.andrey.appviewusers.ui.activities.MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activities.MainActivity"/>
+                android:value="com.andrey.appviewusers.ui.activities.MainActivity"/>
         </activity>
 
-        <activity android:name=".activities.MainActivity">
+        <activity android:name="com.andrey.appviewusers.ui.activities.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
