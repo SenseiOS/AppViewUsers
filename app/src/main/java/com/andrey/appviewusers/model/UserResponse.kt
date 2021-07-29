@@ -1,11 +1,14 @@
 package com.andrey.appviewusers.model
 
 data class UserResponse(
-    val results: List<User>
+    val info: Info,
+    val results: List<Result>
 )
 
-data class UserInfo(
-    val user: User,
+data class Info(
     val seed: String,
+    var result: Int,
+    val page: Int,
     val version: String
 )
+

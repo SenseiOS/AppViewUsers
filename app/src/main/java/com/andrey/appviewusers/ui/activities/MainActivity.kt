@@ -4,7 +4,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -15,6 +14,8 @@ import com.andrey.appviewusers.retrofit.RetrofitService
 import com.andrey.appviewusers.ui.adapter.UsersAdapter
 import com.andrey.appviewusers.ui.viewModels.MainViewModel
 import com.andrey.appviewusers.utils.createViewModel
+
+import androidx.lifecycle.Observer
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -26,8 +27,6 @@ class MainActivity : AppCompatActivity() {
 
     lateinit var adapter: UsersAdapter
 
-    lateinit var mService : RetrofitService
-
     private val viewModel: MainViewModel by lazy {
         createViewModel {
             MainViewModel()
@@ -38,15 +37,14 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        //viewModel.liveItems.observe(this@MainActivity, Observer { adapter.submitList(it) })
         startApplication()
 
-        getUserList()
+        viewModel.randomuserResults.observe(this@MainActivity, Observer { adapter.submitList(it) })
+
     }
 
     private fun startApplication() {
 
-        mService = Common.retrofitService
 
         val rvItems = findViewById<View>(R.id.rvItems) as RecyclerView
 
@@ -63,19 +61,6 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-    private fun getUserList() {
-
-        mService.getSomeData().enqueue(object : Callback<UserResponse> {
-            override fun onFailure(call: Call<UserResponse>, t: Throwable) {
-                Log.d("Er","Error")
-            }
-
-            override fun onResponse(call: Call<UserResponse>, response: Response<UserResponse>) {
-                adapter.submitList(response.body()?.results)
-            }
-
-        })
-    }
 
 
     companion object{
