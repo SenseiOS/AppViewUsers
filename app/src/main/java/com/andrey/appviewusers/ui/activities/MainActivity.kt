@@ -22,6 +22,7 @@ import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
+private const val PUT_ID_NAME = "id"
 
 class MainActivity : AppCompatActivity() {
 
@@ -29,7 +30,7 @@ class MainActivity : AppCompatActivity() {
 
     private val viewModel: MainViewModel by lazy {
         createViewModel {
-            MainViewModel()
+            MainViewModel(this)
         }
     }
 
@@ -61,9 +62,4 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-
-
-    companion object{
-        private const val PUT_ID_NAME = "id"
-    }
 }

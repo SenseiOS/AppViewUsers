@@ -32,10 +32,10 @@ abstract class AppDatabase: RoomDatabase() {
         @Volatile
         private var INSTANCE: AppDatabase? = null
 
-        fun getDatabase(
+      /*  fun getDatabase(
             context: Context,
 
-            scope: CoroutineScope
+           // scope: CoroutineScope
         ): AppDatabase {
             return INSTANCE ?: synchronized(this) {
                 val instance = Room.databaseBuilder(
@@ -43,12 +43,27 @@ abstract class AppDatabase: RoomDatabase() {
                     AppDatabase::class.java,
                     "randomUser_database"
                 )
-                    .addCallback(AppDatabaseCallback(scope))
+                   // .addCallback(AppDatabaseCallback(scope))
                     .build()
                 INSTANCE = instance
                 // return instance
                 instance
             }
+        }*/
+
+        fun getDatabase(context: Context): AppDatabase? {
+            if (INSTANCE == null) {
+                synchronized(AppDatabase::class.java) {
+                    if (INSTANCE == null) {
+                        INSTANCE = Room.databaseBuilder(
+                            context.applicationContext,
+                            AppDatabase::class.java, "randomUser_database"
+                        )
+                            .build()
+                    }
+                }
+            }
+            return INSTANCE
         }
     }
 }

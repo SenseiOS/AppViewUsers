@@ -1,17 +1,24 @@
 package com.andrey.appviewusers.model
 
-import androidx.room.ColumnInfo
-import androidx.room.Entity
-import androidx.room.PrimaryKey
+import androidx.room.*
+import com.andrey.appviewusers.utils.ResultsConverter
 
 @Entity(tableName = "Users")
 data class Result (
+    @Embedded
     val dob: Dob,
     val gender: String,
+    @Embedded
     val location: Location,
     val email: String,
-    val login: Login,
+   // @Embedded
+   // val login: Login,
+    @PrimaryKey
+    @ColumnInfo(name = "id")
+    val uuid: String,
+    @Embedded
     val name: Name,
+    @Embedded
     val picture: Picture
         )
 
@@ -49,7 +56,8 @@ data class Location(
     //val coordinates: Coordinates,
     val country: String,
     //val postcode: Any,
-    val state: String,
+    //val state: String,
+    @Embedded
     val street: Street
     //val timezone: Timezone
 )
