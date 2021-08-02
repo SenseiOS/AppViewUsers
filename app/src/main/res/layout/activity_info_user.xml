@@ -7,7 +7,7 @@
     tools:context=".ui.activities.InfoUser"
     android:id="@+id/toolBar">
 
-    <ImageView
+    <AppCompatImageView
         android:id="@+id/imv_photo"
         android:layout_width="250dp"
         android:layout_height="250dp"

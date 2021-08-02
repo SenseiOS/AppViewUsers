@@ -14,12 +14,15 @@ interface UserDao {
     fun getAll(): List<Result>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insert(users: MutableLiveData<List<Result>>)
+    fun insert(users: List<Result>)
 
     @Query("DELETE FROM Users")
     fun deleteResults()
 
     //@Query("SELECT * FROM Users WHERE   = :id")
     //fun getById(id: Int): Result?
+
+   // @Query("SELECT COUNT(id) from Users")
+   // suspend fun count(): Int
 
 }

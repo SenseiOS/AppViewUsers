@@ -8,10 +8,15 @@ import com.andrey.appviewusers.repository.UserRepository
 
 class MainViewModel(context: Context): ViewModel() {
 
-    var randomuserResults: MutableLiveData<List<Result>>
+    lateinit var randomuserResults: MutableLiveData<List<Result>>
 
 
     init {
+        getUsers(context)
+    }
+
+    fun getUsers(context: Context) {
+
         UserRepository.getUserList(context)
 
         randomuserResults = UserRepository.randomuserResults

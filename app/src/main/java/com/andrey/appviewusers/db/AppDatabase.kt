@@ -8,7 +8,7 @@ import androidx.sqlite.db.SupportSQLiteDatabase
 import com.andrey.appviewusers.model.Result
 import kotlinx.coroutines.CoroutineScope
 
-@Database(entities = [Result::class], version = 1)
+@Database(entities = [Result::class], version = 1, exportSchema = false)
 abstract class AppDatabase: RoomDatabase() {
     abstract fun userDao(): UserDao
 
@@ -59,6 +59,8 @@ abstract class AppDatabase: RoomDatabase() {
                             context.applicationContext,
                             AppDatabase::class.java, "randomUser_database"
                         )
+                            //.allowMainThreadQueries() //???
+                            .fallbackToDestructiveMigration()
                             .build()
                     }
                 }

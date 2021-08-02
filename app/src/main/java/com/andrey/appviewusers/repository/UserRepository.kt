@@ -17,16 +17,13 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class UserRepository (
-    private val userDao: UserDao
-        ){
+object UserRepository{
 
   //  val allUser: List<Result> = userDao.getAll()
 
   //  suspend fun insert(users:List<Result>){
    //     userDao.insert(users)
   //  }
-    companion object {
 
         var userDatabase:AppDatabase? = null
 
@@ -40,7 +37,7 @@ class UserRepository (
             return AppDatabase.getDatabase(context)
         }
 
-        fun insertData(context: Context, users: MutableLiveData<List<Result>>) {
+        fun insertData(context: Context, users: List<Result>) {
             userDatabase = initializeDB(context)
 
             CoroutineScope(IO).launch {
@@ -62,10 +59,10 @@ class UserRepository (
 
        fun getUserList(context: Context) {
 
-          mService.getSomeData().enqueue(object : Callback<UserResponse> {
+          mService.getSomeData(1).enqueue(object : Callback<UserResponse> {
               override fun onFailure(call: Call<UserResponse>, t: Throwable) {
 
-                //  randomuserResults = getUsers(context)
+                  randomuserResults = getUsers(context)
                   Log.d("Er","Error")
               }
 
@@ -73,10 +70,9 @@ class UserRepository (
                   // adapter.submitLisresponse.body()?.results)
                   randomuserResults.postValue(response.body()?.results)
 
-                 // insertData(context, randomuserResults)
+                  randomuserResults.value?.let { insertData(context, it) }
               }
 
           })
       }
     }
-}

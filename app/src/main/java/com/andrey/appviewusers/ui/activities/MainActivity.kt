@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -16,6 +17,7 @@ import com.andrey.appviewusers.ui.viewModels.MainViewModel
 import com.andrey.appviewusers.utils.createViewModel
 
 import androidx.lifecycle.Observer
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -34,6 +36,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -41,6 +44,14 @@ class MainActivity : AppCompatActivity() {
         startApplication()
 
         viewModel.randomuserResults.observe(this@MainActivity, Observer { adapter.submitList(it) })
+
+        val swipeRefreshLayout = findViewById<SwipeRefreshLayout>(R.id.swipeRefreshLayout)
+        swipeRefreshLayout .setOnRefreshListener {
+
+            viewModel.getUsers(baseContext)
+
+            swipeRefreshLayout.isRefreshing = false
+        }
 
     }
 

@@ -1,9 +1,8 @@
 package com.andrey.appviewusers.model
 
 import androidx.room.*
-import com.andrey.appviewusers.utils.ResultsConverter
 
-@Entity(tableName = "Users")
+@Entity(tableName = "Users", primaryKeys = ["id"])
 data class Result (
     @Embedded
     val dob: Dob,
@@ -11,11 +10,8 @@ data class Result (
     @Embedded
     val location: Location,
     val email: String,
-   // @Embedded
-   // val login: Login,
-    @PrimaryKey
-    @ColumnInfo(name = "id")
-    val uuid: String,
+    @Embedded
+    val login: Login,
     @Embedded
     val name: Name,
     @Embedded

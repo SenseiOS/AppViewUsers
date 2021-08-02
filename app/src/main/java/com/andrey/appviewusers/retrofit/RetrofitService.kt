@@ -4,9 +4,11 @@ import com.andrey.appviewusers.model.Result
 import com.andrey.appviewusers.model.UserResponse
 import retrofit2.Call
 import retrofit2.http.GET
+import retrofit2.http.Path
+import retrofit2.http.Query
 
 interface RetrofitService {
 
-    @GET("?page=1&results=20&inc=email,login,username,name,location,gender,dob,picture")
-    fun getSomeData(): Call<UserResponse>
+    @GET("?results=20&inc=email,login,username,name,location,gender,dob,picture")
+    fun getSomeData(@Query("page") page: Int?):UserResponse
 }
