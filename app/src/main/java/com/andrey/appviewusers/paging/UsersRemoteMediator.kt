@@ -12,7 +12,7 @@ import retrofit2.HttpException
 import java.io.IOException
 import java.io.InvalidObjectException
 
-@ExperimentalPagingApi
+/*@ExperimentalPagingApi
 class UsersRemoteMediator (
     private val service: RetrofitService,
     private val db: AppDatabase
@@ -53,7 +53,7 @@ class UsersRemoteMediator (
 /**
  * get the last remote key inserted which had the data
  */
-private suspend fun getLastRemoteKey(state: PagingState<Int, DoggoImageModel>): RemoteKeys? {
+private suspend fun getLastRemoteKey(state: PagingState<Int, Re>): RemoteKeys? {
     return state.pages
         .lastOrNull { it.data.isNotEmpty() }
         ?.data?.lastOrNull()
@@ -80,4 +80,4 @@ private suspend fun getClosestRemoteKey(state: PagingState<Int, DoggoImageModel>
         }
     }
 }
-}
+}*/

@@ -26,7 +26,7 @@ class InfoUser : AppCompatActivity() {
 
     private val viewModel: InfoUserViewModel by lazy {
         createViewModel {
-            InfoUserViewModel()
+            InfoUserViewModel(this)
         }
     }
     override fun onCreate(savedInstanceState: Bundle?) {

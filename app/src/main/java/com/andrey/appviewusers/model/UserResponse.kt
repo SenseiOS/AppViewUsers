@@ -2,7 +2,7 @@ package com.andrey.appviewusers.model
 
 data class UserResponse(
     val info: Info,
-    val results: List<Result>
+    val results: MutableList<Result>
 )
 
 data class Info(

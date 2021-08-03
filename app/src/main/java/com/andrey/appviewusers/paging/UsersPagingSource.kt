@@ -9,7 +9,7 @@ import retrofit2.HttpException
 import retrofit2.await
 import java.io.IOException
 
-class UsersPagingSource(private val userApi: RetrofitService): PagingSource<Int, Result>() {
+/*class UsersPagingSource(private val userApi: RetrofitService): PagingSource<Int, Result>() {
     companion object{
         const val INITIAL_PAGE_INDEX = 0
     }
@@ -36,5 +36,5 @@ class UsersPagingSource(private val userApi: RetrofitService): PagingSource<Int,
             return LoadResult.Error(exception)
         }
     }
-}
+}*/
 

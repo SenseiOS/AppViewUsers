@@ -32,6 +32,9 @@ class UsersAdapter (val clickListener: (Result) -> Unit) :
         val nameTextView: TextView = itemView.findViewById(R.id.user_name)
     }
 
+    override fun getItemCount(): Int {
+        return currentList.size
+    }
     class DiffCallback : DiffUtil.ItemCallback<Result>() {
         override fun areItemsTheSame(oldItem: Result, newItem: Result): Boolean {
             return oldItem.login.uuid == newItem.login.uuid
