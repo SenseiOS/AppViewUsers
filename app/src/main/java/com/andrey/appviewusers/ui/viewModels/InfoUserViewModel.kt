@@ -8,15 +8,15 @@ import com.andrey.appviewusers.model.Result
 import com.andrey.appviewusers.repository.UserRepository
 
 class InfoUserViewModel(
-    context: Context
+    private val userRepository: UserRepository
 ):ViewModel() {
 
     val user: MutableLiveData<Result> = MutableLiveData<Result>()
 
     //val userRepository: UserRepository = UserRepository(AppDatabase.invoke(context))
 
-    fun getUser(id: String) {
-        UserRepository.getUser(id)?.let {
+    suspend fun getUser(id: String) {
+        userRepository.getUser(id)?.let {
             user?.value = it
         }
     }

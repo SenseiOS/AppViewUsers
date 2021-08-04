@@ -8,6 +8,7 @@ import androidx.lifecycle.Observer
 import com.andrey.appviewusers.R
 import com.andrey.appviewusers.model.Result
 import com.andrey.appviewusers.ui.viewModels.InfoUserViewModel
+import com.andrey.appviewusers.utils.DiUtil
 import com.andrey.appviewusers.utils.createViewModel
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
@@ -25,7 +26,7 @@ class InfoUser : AppCompatActivity() {
 
     private val viewModel: InfoUserViewModel by lazy {
         createViewModel {
-            InfoUserViewModel(this)
+            InfoUserViewModel(DiUtil.userRepository)
         }
     }
 
@@ -43,7 +44,7 @@ class InfoUser : AppCompatActivity() {
         countryTextView = findViewById(R.id.txt_country)
 
         viewModel.user.observe(this, Observer { displayInfo(it) })
-        intent.getStringExtra(GET_NAME_ID)?.let { viewModel.getUser(it) }
+        //intent.getStringExtra(GET_NAME_ID)?.let { viewModel.getUser(it) }
 
     }
 

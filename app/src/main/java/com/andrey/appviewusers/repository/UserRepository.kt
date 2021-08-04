@@ -1,33 +1,23 @@
 package com.andrey.appviewusers.repository
 
-import android.content.Context
 import com.andrey.appviewusers.db.AppDatabase
 import com.andrey.appviewusers.model.Result
-import com.andrey.appviewusers.retrofit.Common
-import com.andrey.appviewusers.retrofit.RetrofitService
+import com.andrey.appviewusers.utils.DiUtil.api
 
 
-object UserRepository {
+class UserRepository(private val appDatabase: AppDatabase) {
 
-    var appDatabase: AppDatabase? = null
-    private val mService: RetrofitService by lazy {
-        Common.retrofitService
-    }
-
-    fun initialDb(context: Context) {
-        appDatabase = AppDatabase.invoke(context)
-    }
 
     suspend fun getUsers(pageNumber: Int) =
-        mService.getSomeData(pageNumber)
+        api.getSomeData(pageNumber)
 
-    fun insert(users: List<Result>) = appDatabase?.userDao()?.insert(users) //suspend
+    suspend fun insert(users: List<Result>) = appDatabase?.userDao()?.insert(users) //suspend
 
-    fun getSavedUsers() = appDatabase?.userDao()?.getAll()
+    suspend fun getSavedUsers() = appDatabase?.userDao()?.getAll()
 
-    fun deleteDbUsers() = appDatabase?.userDao()?.deleteResults()
+    suspend fun deleteDbUsers() = appDatabase?.userDao()?.deleteResults()
 
-    fun getUser(id: String) = appDatabase?.userDao()?.getUser(id)
+    suspend fun getUser(id: String) = appDatabase?.userDao()?.getUser(id)
 
 
 }

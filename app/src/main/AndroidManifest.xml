@@ -11,7 +11,8 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.AppViewUsers">
+        android:theme="@style/Theme.AppViewUsers"
+        android:name=".App">
 
         <activity android:name="com.andrey.appviewusers.ui.activities.InfoUser">
         <!--   android:parentActivityName="com.andrey.appviewusers.ui.activities.MainActivity">

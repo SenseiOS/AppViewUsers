@@ -14,6 +14,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.andrey.appviewusers.R
 import com.andrey.appviewusers.ui.adapter.UsersAdapter
 import com.andrey.appviewusers.ui.viewModels.MainViewModel
+import com.andrey.appviewusers.utils.DiUtil
 import com.andrey.appviewusers.utils.Resource
 import com.andrey.appviewusers.utils.createViewModel
 
@@ -25,7 +26,7 @@ class MainActivity : AppCompatActivity() {
 
     private val viewModel: MainViewModel by lazy {
         createViewModel {
-            MainViewModel(this)
+            MainViewModel(DiUtil.userRepository)
         }
     }
 
@@ -53,7 +54,7 @@ class MainActivity : AppCompatActivity() {
                     response.message?.let { message ->
                         Log.e("App", "An error occured: $message")
                     }
-                    adapter.submitList(viewModel.getSavedUser())
+                    //adapter.submitList(viewModel.getSavedUser())
                 }
                 is Resource.Loading -> {
                     showProgressBar()

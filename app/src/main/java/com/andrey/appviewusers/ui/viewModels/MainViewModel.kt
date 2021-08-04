@@ -15,7 +15,7 @@ import kotlinx.coroutines.launch
 import retrofit2.Response
 
 class MainViewModel(
-   val  context: Context
+   private val userRepository: UserRepository
 ) : ViewModel() {
 
 
@@ -25,19 +25,18 @@ class MainViewModel(
 
 
     init {
-        UserRepository.initialDb(context)
         getUsers()
     }
 
     fun getUsers() = viewModelScope.launch {
         users.postValue(Resource.Loading())
-        if (isOnline(context)) {
-            val response = UserRepository.getUsers(usersPage)
-            response.body()?.let { UserRepository.insert(it.results) }
-            users.postValue(handleBreakingNewsResponse(response))
-        } else {
-            users.postValue(Resource.Error(message = "Error"))
-        }
+       // if (isOnline(context)) {
+            val response = userRepository.getUsers(usersPage)
+            response.body()?.let { userRepository.insert(it.results) }
+            users.postValue(usersResponse(response))
+      //  } else {
+      //      users.postValue(Resource.Error(message = "Error"))
+       // }
     }
 
     private fun isOnline(context: Context): Boolean {
@@ -64,10 +63,10 @@ class MainViewModel(
         return false
     }
 
-    private fun handleBreakingNewsResponse(response: Response<UserResponse>): Resource<UserResponse> {
+    private suspend fun usersResponse(response: Response<UserResponse>): Resource<UserResponse> {
         if (response.isSuccessful) {
             response.body()?.let { resultResponse ->
-                UserRepository.insert(resultResponse.results)
+                userRepository.insert(resultResponse.results)
                 usersPage++
                 if (userResponse == null) {
                     deletedbUsers()
@@ -86,13 +85,13 @@ class MainViewModel(
     }
 
     fun saveUsers(users: List<Result>) = viewModelScope.launch {
-        UserRepository.insert(users)
+        userRepository.insert(users)
     }
 
-    fun getSavedUser() = UserRepository.getSavedUsers()
+    suspend fun getSavedUser() = userRepository.getSavedUsers()
 
     fun deletedbUsers() = viewModelScope.launch {
-        UserRepository.deleteDbUsers()
+        userRepository.deleteDbUsers()
     }
 
     fun refreshUsers()

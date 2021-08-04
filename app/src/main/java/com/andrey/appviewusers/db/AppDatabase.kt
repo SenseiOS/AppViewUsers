@@ -25,7 +25,6 @@ abstract class AppDatabase : RoomDatabase() {
                 AppDatabase::class.java,
                 "randomUser_database"
             )
-                .allowMainThreadQueries()  // Не уверен что правильно
                 .build()
     }
 }

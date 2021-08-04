@@ -20,16 +20,22 @@ class UsersAdapter (val clickListener: (Result) -> Unit) :
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         val item: Result = currentList[position]
-        val textView = holder.nameTextView
-        textView.text = item.name.getFullName()
 
-        holder.itemView.setOnClickListener {
-            clickListener(item)
-        }
+        holder.bind(item, clickListener)
+
     }
 
     class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val nameTextView: TextView = itemView.findViewById(R.id.user_name)
+
+        fun bind (item: Result, clickListener: (Result) -> Unit)
+        {
+            nameTextView.text = item.name.getFullName()
+
+            itemView.setOnClickListener {
+                clickListener(item)
+            }
+        }
     }
 
     class DiffCallback : DiffUtil.ItemCallback<Result>() {
