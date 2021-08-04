@@ -31,11 +31,6 @@ data class Name(
 }
 
 data class Login(
-    //val md5: String,
-    //val password: String,
-    //val salt: String,
-    //val sha1: String,
-    //val sha256: String,
     val username: String,
     @PrimaryKey
     @ColumnInfo(name = "id")
@@ -49,18 +44,9 @@ data class Dob(
 
 data class Location(
     val city: String,
-    //val coordinates: Coordinates,
     val country: String,
-    //val postcode: Any,
-    //val state: String,
     @Embedded
     val street: Street
-    //val timezone: Timezone
-)
-
-data class Coordinates(
-    val latitude: String,
-    val longitude: String
 )
 
 data class Street(
@@ -74,15 +60,8 @@ data class Street(
     }
 }
 
-data class Timezone(
-    val description: String,
-    val offset: String
-)
-
 data class Picture(
     @ColumnInfo(name = "url_photo")
     val large: String
-    //val medium: String,
-    //val thumbnail: String
 )
 

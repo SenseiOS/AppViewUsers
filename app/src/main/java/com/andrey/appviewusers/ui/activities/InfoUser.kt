@@ -3,15 +3,14 @@ package com.andrey.appviewusers.ui.activities
 import android.os.Bundle
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toolbar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import com.andrey.appviewusers.R
 import com.andrey.appviewusers.model.Result
 import com.andrey.appviewusers.ui.viewModels.InfoUserViewModel
-import com.andrey.appviewusers.ui.viewModels.MainViewModel
 import com.andrey.appviewusers.utils.createViewModel
-import com.squareup.picasso.Picasso
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.CircleCrop
 
 class InfoUser : AppCompatActivity() {
 
@@ -29,6 +28,7 @@ class InfoUser : AppCompatActivity() {
             InfoUserViewModel(this)
         }
     }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_info_user)
@@ -49,10 +49,9 @@ class InfoUser : AppCompatActivity() {
 
     private fun displayInfo(user: Result) {
         title = user.login.username
-        Picasso.with(baseContext)
+        Glide.with(baseContext)
             .load(user.picture.large)
-            .resize(1080, 1080)
-            .centerCrop()
+            .transform(CircleCrop())
             .into(photoImage)
         nameTextView.text = user.name.getFullName()
         genderTextView.text = user.gender
@@ -63,8 +62,7 @@ class InfoUser : AppCompatActivity() {
         countryTextView.text = user.location.country
     }
 
-    companion object{
-        private const val DEFAULT_NUMBER_ID = 0
+    companion object {
         private const val GET_NAME_ID = "id"
     }
 }

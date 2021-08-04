@@ -1,6 +1,6 @@
 package com.andrey.appviewusers.retrofit
 
-private val BASE_URL = "https://randomuser.me/api/"
+private const val BASE_URL = "https://randomuser.me/api/"
 
 object Common {
 
