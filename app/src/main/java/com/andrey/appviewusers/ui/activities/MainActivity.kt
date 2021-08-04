@@ -53,7 +53,7 @@ class MainActivity : AppCompatActivity() {
                 is Resource.Success -> {
                    hideProgressBar()
                     response.data?.let { usersResponse ->
-                        adapter.submitList(usersResponse.results)
+                        adapter.submitList(usersResponse.results.toList())
                         //val totalPages = usersResponse.totalResults / QUERY_PAGE_SIZE + 2
                         //isLastPage = viewModel.breakingNewsPage == totalPages
                     }

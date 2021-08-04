@@ -42,7 +42,7 @@ class MainViewModel(
                // UserRepository.insert(resultResponse.results)
                 usersPage++
                 if(userResponse == null) {
-                    UserRepository.deleteDbUsers()
+                    deletedbUsers()
                     userResponse = resultResponse
                 } else {
                     val oldUsers = userResponse?.results
@@ -50,10 +50,12 @@ class MainViewModel(
                     oldUsers?.addAll(newUsers)
                 }
 
-                UserRepository.insert(resultResponse.results)
+                saveUsers(userResponse!!.results)
                 return Resource.Success(userResponse ?: resultResponse)
             }
         }
+
+       // users.postValue(Resource.Success((userResponse ?: getSavedUser()) as UserResponse))
 
         return Resource.Error(response.message())
     }
