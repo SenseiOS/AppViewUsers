@@ -1,6 +1,6 @@
 package com.andrey.appviewusers.model
 
-import androidx.room.*
+import com.andrey.appviewusers.db.User
 
 data class Result (
     val dob: Dob,
@@ -48,5 +48,21 @@ data class Street(
 
 data class Picture(
     val large: String
+)
+
+fun Result.toUser() = User(
+    uuid = login.uuid,
+    age = dob.age,
+    date = dob.date,
+    gender = gender,
+    city = location.city,
+    country = location.country,
+    name = location.street.name,
+    number = location.street.number,
+    email = email,
+    username = login.username,
+    first = name.first,
+    last = name.last,
+    large = picture.large
 )
 

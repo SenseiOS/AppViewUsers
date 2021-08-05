@@ -3,8 +3,9 @@ package com.andrey.appviewusers.utils
 import android.content.Context
 import com.andrey.appviewusers.db.AppDatabase
 import com.andrey.appviewusers.repository.UserRepository
-import com.andrey.appviewusers.retrofit.RetrofitClient
 import com.andrey.appviewusers.retrofit.RetrofitService
+import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
@@ -20,20 +21,23 @@ object DiUtil {
         AppDatabase(contextProvider())
     }
 
-   private val retrofitService by lazy {
-       getClient()
-    }
-
-    private fun getClient(): Retrofit {
-            return Retrofit.Builder()
-                .baseUrl(BASE_URL)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build()
+    private val retrofitService by lazy {
+        val logging = HttpLoggingInterceptor()
+        logging.setLevel(HttpLoggingInterceptor.Level.BODY)
+        val client = OkHttpClient.Builder()
+            .addInterceptor(logging)
+            .build()
+        Retrofit.Builder()
+            .baseUrl(BASE_URL)
+            .addConverterFactory(GsonConverterFactory.create())
+            .client(client)
+            .build()
     }
 
     val api by lazy {
         retrofitService.create(RetrofitService::class.java)
     }
+
     fun init(context: Context) {
         contextProvider = { context }
     }

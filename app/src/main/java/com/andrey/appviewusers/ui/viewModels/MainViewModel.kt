@@ -7,12 +7,12 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.andrey.appviewusers.db.User
 import com.andrey.appviewusers.model.Result
 import com.andrey.appviewusers.model.UserResponse
 import com.andrey.appviewusers.repository.UserRepository
 import com.andrey.appviewusers.utils.Resource
 import kotlinx.coroutines.launch
-import retrofit2.Response
 
 class MainViewModel(
    private val userRepository: UserRepository
@@ -32,7 +32,7 @@ class MainViewModel(
         users.postValue(Resource.Loading())
        // if (isOnline(context)) {
             val response = userRepository.getUsers(usersPage)
-            response.body()?.let { userRepository.insert(it.results) }
+          //  response.body()?.let { userRepository.insert(it.results) }
             users.postValue(usersResponse(response))
       //  } else {
       //      users.postValue(Resource.Error(message = "Error"))
@@ -63,13 +63,13 @@ class MainViewModel(
         return false
     }
 
-    private suspend fun usersResponse(response: Response<UserResponse>): Resource<UserResponse> {
+    private suspend fun usersResponse(response: List<User>): Resource<UserResponse>? {
         if (response.isSuccessful) {
             response.body()?.let { resultResponse ->
-                userRepository.insert(resultResponse.results)
+              //  userRepository.insert(resultResponse.results)
                 usersPage++
                 if (userResponse == null) {
-                    deletedbUsers()
+                  //  deletedbUsers()
                     userResponse = resultResponse
                 } else {
                     val oldUsers = userResponse?.results
@@ -77,15 +77,15 @@ class MainViewModel(
                     oldUsers?.addAll(newUsers)
                 }
 
-                saveUsers(userResponse!!.results)
+               // saveUsers(userResponse!!.results)
                 return Resource.Success(userResponse ?: resultResponse)
             }
         }
-        return Resource.Error(response.message())
+       return Resource.Error(response.message())
     }
 
     fun saveUsers(users: List<Result>) = viewModelScope.launch {
-        userRepository.insert(users)
+      //  userRepository.insert(users)
     }
 
     suspend fun getSavedUser() = userRepository.getSavedUsers()

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/users_navigation"
+    app:startDestination="@id/viewUsersFragment">
+
+    <fragment
+        android:id="@+id/viewUsersFragment"
+        android:name="com.andrey.appviewusers.ui.fragments.ViewUsersFragment"
+        android:label="ViewUsersFragment" >
+        <action
+            android:id="@+id/action_viewUsersFragment_to_infoUserFragment"
+            app:destination="@id/infoUserFragment"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/infoUserFragment"
+        android:name="com.andrey.appviewusers.ui.fragments.InfoUserFragment"
+        android:label="InfoUserFragment" >
+        <argument
+            android:name="article"
+            app:argType="com.andrey.appviewusers.model.Result" />
+    </fragment>
+
+</navigation>
