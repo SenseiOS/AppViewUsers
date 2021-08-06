@@ -23,16 +23,16 @@ class InfoUserFragment : BaseFragment<FragmentInfoUserBinding>() {
         }
     private val viewModel: InfoUserViewModel by lazy {
         createViewModel {
-            InfoUserViewModel(DiUtil.userRepository)
+            InfoUserViewModel(DiUtil.userRepository,arguments?.getString(GET_NAME_ID)?: "")
         }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.user.observe(viewLifecycleOwner, Observer { displayInfo(it) })
+        viewModel.user.observe(viewLifecycleOwner) { displayInfo(it) }
 
-        arguments?.getString(GET_NAME_ID)?.let { viewModel.getUser(it) }
+        arguments?.getString(GET_NAME_ID)?.let { viewModel.getUser() }
 
     }
 

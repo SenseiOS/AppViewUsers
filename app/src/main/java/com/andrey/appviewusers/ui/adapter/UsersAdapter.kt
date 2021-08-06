@@ -8,15 +8,17 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.andrey.appviewusers.R
+import com.andrey.appviewusers.databinding.UserBinding
 import com.andrey.appviewusers.db.User
-import com.andrey.appviewusers.model.Result
+import com.andrey.appviewusers.databinding.FragmentViewUsersBinding
 
-class UsersAdapter (private val clickListener: (User) -> Unit) :
+class UsersAdapter (private val clickListener: (User) -> Unit, private val paginationListener: () -> Unit ) :
     ListAdapter<User, UsersAdapter.MyViewHolder>(DiffCallback()) {
 
+    private var prefetchCount = 3
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
-        val itemView = LayoutInflater.from(parent.context).inflate(R.layout.user, parent, false)
-        return MyViewHolder(itemView)
+        val bindingView = UserBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return MyViewHolder(bindingView)
     }
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
@@ -24,16 +26,19 @@ class UsersAdapter (private val clickListener: (User) -> Unit) :
 
         holder.bind(item, clickListener)
 
+        if(position>= itemCount - prefetchCount) {
+            paginationListener()
+        }
+
     }
 
-    class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val nameTextView: TextView = itemView.findViewById(R.id.user_name)
+    class MyViewHolder(private val binding: UserBinding) : RecyclerView.ViewHolder(binding.root) {
 
-        fun bind (item: User, clickListener: (User) -> Unit)
-        {
-            nameTextView.text = item.getFullName()
 
-            itemView.setOnClickListener {
+        fun bind (item: User, clickListener: (User) -> Unit) {
+            binding.userName.text = item.getFullName()
+
+            binding.root.setOnClickListener {
                 clickListener(item)
             }
         }

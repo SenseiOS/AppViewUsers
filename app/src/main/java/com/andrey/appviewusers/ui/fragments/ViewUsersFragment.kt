@@ -70,30 +70,24 @@ class ViewUsersFragment : BaseFragment<FragmentViewUsersBinding>() {
 
     private fun setupRecyclerView() {
 
-        usersAdapter = UsersAdapter {
-            activity?.supportFragmentManager?.beginTransaction()?.apply {
-                replace(R.id.container_fragments, InfoUserFragment.newInstance(it.uuid))
-                addToBackStack(null)
-                commit()
+        usersAdapter = UsersAdapter(
+            clickListener = { //Вынести в Base fragment
+                activity?.supportFragmentManager?.beginTransaction()?.apply {
+                    replace(R.id.container_fragments, InfoUserFragment.newInstance(it.uuid))
+                    addToBackStack(null)
+                    commit()
+                }
+            },
+            paginationListener = {
+                showProgressBar()
+                viewModel.getUsers()
+                hideProgressBar()
+
             }
-        }
+        )
         binding.rvUsers.apply {
             layoutManager = LinearLayoutManager(context)
             adapter = usersAdapter
-            addOnScrollListener(object : RecyclerView.OnScrollListener() {
-
-                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                    super.onScrolled(recyclerView, dx, dy)
-                    if (usersAdapter.itemCount > 0
-                        && !recyclerView.canScrollVertically(1)
-                    ) {
-                        showProgressBar()
-                        viewModel.getUsers()
-                        hideProgressBar()
-                    }
-                }
-
-            })
         }
 
     }

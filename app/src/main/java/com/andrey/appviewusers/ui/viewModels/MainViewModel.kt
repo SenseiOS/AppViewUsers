@@ -16,7 +16,7 @@ class MainViewModel(
 
     private val mutableUsers: MutableLiveData<Resource<List<User>>> = MutableLiveData()
     val users: LiveData<Resource<List<User>>> = mutableUsers
-    private var userResponse: MutableList<User>? = null
+    private var userResponse: Boolean = false
 
 
     init {
@@ -27,16 +27,23 @@ class MainViewModel(
         viewModelScope.launch {
             mutableUsers.postValue(Resource.Loading())
             try {
-                val response = userRepository.getUsers()
-                if (userResponse == null) {
-                    userResponse = response.toMutableList()
-                } else {
-                    userResponse?.addAll(response)
+               // val response = userRepository.getUsers()
+                //if (userResponse == null) {
+                 //   userResponse = response.toMutableList()
+               // } else {
+               //     userResponse?.addAll(response)
 
-                }
+              //  }
+                 // if(!userResponse){
+                      mutableUsers.postValue(Resource.Success(userRepository.getUsers()))
+                 // }
+               // else
+               //   {
 
-                userResponse?.let { mutableUsers.postValue(Resource.Success(it)) }
-                saveUsers(response)
+                 // }
+
+               // userResponse?.let { mutableUsers.postValue(Resource.Success(it)) }
+                //saveUsers(response)
             } catch (error: Exception) {
                 mutableUsers.postValue(Resource.Error(error.toString()))
             }
@@ -48,7 +55,8 @@ class MainViewModel(
 
 
     fun refreshUsers() {
-        userResponse = null
+        userResponse//Изменить на boolean
+
 
         getUsers()
     }

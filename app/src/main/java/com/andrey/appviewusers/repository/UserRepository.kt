@@ -15,7 +15,7 @@ class UserRepository(
     private var usersPage = 1
 
     suspend fun getUsers(): List<User> {
-        try {
+        return try {
             val response = userApi.getSomeData(usersPage)
 
             usersPage++
@@ -23,12 +23,11 @@ class UserRepository(
                 trueConnection = true
                 deleteDbUsers()
             }
-            return response.body()?.results?.map { it.toUser() } ?: listOf()
+            response.body()?.results?.map { it.toUser() } ?: listOf()
         } catch (error: Exception) {
+            trueConnection = false
+            getSavedUsers()
         }
-
-        trueConnection = false
-        return getSavedUsers()
     }
 
     suspend fun insert(users: List<User>) = userDao.insert(users)

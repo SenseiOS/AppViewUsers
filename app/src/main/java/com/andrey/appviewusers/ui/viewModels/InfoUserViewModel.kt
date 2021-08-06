@@ -9,16 +9,17 @@ import com.andrey.appviewusers.repository.UserRepository
 import kotlinx.coroutines.launch
 
 class InfoUserViewModel(
-    private val userRepository: UserRepository
+    private val userRepository: UserRepository,
+    private val userId: String
 ) : ViewModel() {
 
     private val mutableUser: MutableLiveData<User> = MutableLiveData<User>()
     val user: LiveData<User> = mutableUser
 
 
-    fun getUser(id: String){
+    fun getUser(){
         viewModelScope.launch {
-            userRepository.getUser(id).let {
+            userRepository.getUser(userId).let {
                 mutableUser.value = it
             }
         }
