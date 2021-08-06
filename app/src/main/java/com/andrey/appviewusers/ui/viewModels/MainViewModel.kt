@@ -16,7 +16,6 @@ class MainViewModel(
 
     private val mutableUsers: MutableLiveData<Resource<List<User>>> = MutableLiveData()
     val users: LiveData<Resource<List<User>>> = mutableUsers
-    val user: MutableLiveData<User>? = null
     private var userResponse: MutableList<User>? = null
 
 

@@ -50,6 +50,7 @@ class ViewUsersFragment : BaseFragment<FragmentViewUsersBinding>() {
                     response.message?.let { message ->
                         Log.e("App", "An error occured: $message")
                     }
+                    //adapter.submitList(viewModel.getSavedUser())
                 }
                 is Resource.Loading -> {
                     showProgressBar()
