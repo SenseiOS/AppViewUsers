@@ -8,10 +8,11 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.andrey.appviewusers.R
+import com.andrey.appviewusers.db.User
 import com.andrey.appviewusers.model.Result
 
-class UsersAdapter (val clickListener: (Result) -> Unit) :
-    ListAdapter<Result, UsersAdapter.MyViewHolder>(DiffCallback()) {
+class UsersAdapter (private val clickListener: (User) -> Unit) :
+    ListAdapter<User, UsersAdapter.MyViewHolder>(DiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
         val itemView = LayoutInflater.from(parent.context).inflate(R.layout.user, parent, false)
@@ -19,7 +20,7 @@ class UsersAdapter (val clickListener: (Result) -> Unit) :
     }
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-        val item: Result = currentList[position]
+        val item: User = currentList[position]
 
         holder.bind(item, clickListener)
 
@@ -28,9 +29,9 @@ class UsersAdapter (val clickListener: (Result) -> Unit) :
     class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val nameTextView: TextView = itemView.findViewById(R.id.user_name)
 
-        fun bind (item: Result, clickListener: (Result) -> Unit)
+        fun bind (item: User, clickListener: (User) -> Unit)
         {
-            nameTextView.text = item.name.getFullName()
+            nameTextView.text = item.getFullName()
 
             itemView.setOnClickListener {
                 clickListener(item)
@@ -38,12 +39,12 @@ class UsersAdapter (val clickListener: (Result) -> Unit) :
         }
     }
 
-    class DiffCallback : DiffUtil.ItemCallback<Result>() {
-        override fun areItemsTheSame(oldItem: Result, newItem: Result): Boolean {
-            return oldItem.login.uuid == newItem.login.uuid
+    class DiffCallback : DiffUtil.ItemCallback<User>() {
+        override fun areItemsTheSame(oldItem: User, newItem: User): Boolean {
+            return oldItem.uuid == newItem.uuid
         }
 
-        override fun areContentsTheSame(oldItem: Result, newItem: Result): Boolean {
+        override fun areContentsTheSame(oldItem: User, newItem: User): Boolean {
             return oldItem == newItem
         }
 

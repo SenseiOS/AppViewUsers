@@ -1,12 +1,11 @@
 package com.andrey.appviewusers.db
 
 import androidx.room.ColumnInfo
-import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 @Entity(tableName = "Users")
-data class User (
+data class User(
     @PrimaryKey
     @ColumnInfo(name = "id")
     val uuid: String,
@@ -39,8 +38,7 @@ data class User (
 
     @ColumnInfo(name = "url_photo")
     val large: String
-)
-{
+) {
     fun getFullStreet(): String {
         return "$name $number"
     }

@@ -15,11 +15,7 @@ data class Result (
 data class Name(
     val first: String,
     val last: String
-) {
-    fun getFullName(): String {
-        return "$first $last"
-    }
-}
+)
 
 data class Login(
     val username: String,
@@ -40,11 +36,7 @@ data class Location(
 data class Street(
     val name: String,
     val number: Int
-) {
-    fun getFullStreet(): String {
-        return "$name $number"
-    }
-}
+)
 
 data class Picture(
     val large: String

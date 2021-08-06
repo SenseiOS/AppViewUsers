@@ -14,13 +14,6 @@
         android:theme="@style/Theme.AppViewUsers"
         android:name=".App">
 
-        <activity android:name="com.andrey.appviewusers.ui.fragments.InfoUser">
-        <!--   android:parentActivityName="com.andrey.appviewusers.ui.activities.MainActivity">
-         <meta-data
-             android:name="android.support.PARENT_ACTIVITY"
-             android:value="com.andrey.appviewusers.ui.activities.MainActivity"/>-->
-        </activity>
-
         <activity android:name="com.andrey.appviewusers.ui.activities.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

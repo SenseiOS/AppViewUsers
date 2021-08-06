@@ -1,24 +1,26 @@
 package com.andrey.appviewusers.ui.viewModels
 
-import android.content.Context
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.andrey.appviewusers.db.AppDatabase
+import androidx.lifecycle.viewModelScope
 import com.andrey.appviewusers.db.User
-import com.andrey.appviewusers.model.Result
 import com.andrey.appviewusers.repository.UserRepository
+import kotlinx.coroutines.launch
 
 class InfoUserViewModel(
     private val userRepository: UserRepository
-):ViewModel() {
+) : ViewModel() {
 
-    val user: MutableLiveData<User> = MutableLiveData<User>()
+    private val mutableUser: MutableLiveData<User> = MutableLiveData<User>()
+    val user: LiveData<User> = mutableUser
 
-    //val userRepository: UserRepository = UserRepository(AppDatabase.invoke(context))
 
-    /*suspend fun getUser(id: String) {
-        userRepository.getUser(id)?.let {
-            user?.value = it
+    fun getUser(id: String){
+        viewModelScope.launch {
+            userRepository.getUser(id).let {
+                mutableUser.value = it
+            }
         }
-    }*/
+    }
 }

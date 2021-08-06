@@ -1,62 +1,57 @@
 package com.andrey.appviewusers.ui.fragments
 
 import android.os.Bundle
-import android.util.Log
-import androidx.fragment.app.Fragment
+import android.view.LayoutInflater
 import android.view.View
-import com.andrey.appviewusers.R
-import com.andrey.appviewusers.databinding.FragmentViewUsersBinding
+import android.view.ViewGroup
+import androidx.lifecycle.Observer
+import com.andrey.appviewusers.base.BaseFragment
+import com.andrey.appviewusers.databinding.FragmentInfoUserBinding
 import com.andrey.appviewusers.db.User
-import com.andrey.appviewusers.ui.activities.MainActivity
-import com.andrey.appviewusers.ui.viewModels.MainViewModel
+import com.andrey.appviewusers.ui.viewModels.InfoUserViewModel
+import com.andrey.appviewusers.utils.DiUtil
+import com.andrey.appviewusers.utils.createViewModel
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
-import com.andrey.appviewusers.databinding.FragmentInfoUserBinding
 
 
-class InfoUserFragment : Fragment(R.layout.fragment_info_user) {
+class InfoUserFragment : BaseFragment<FragmentInfoUserBinding>() {
 
-    lateinit var viewModel: MainViewModel
-
-    private var viewBinding: FragmentInfoUserBinding? = null
+    override val viewBindingProvider: (LayoutInflater, ViewGroup?) -> FragmentInfoUserBinding =
+        { inflater, container ->
+            FragmentInfoUserBinding.inflate(inflater, container, false)
+        }
+    private val viewModel: InfoUserViewModel by lazy {
+        createViewModel {
+            InfoUserViewModel(DiUtil.userRepository)
+        }
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel = (activity as MainActivity).viewModel
 
-        viewBinding = FragmentInfoUserBinding.bind(view)
-       // viewModel.users.observe(viewLifecycleOwner, Observer { displayInfo(it) })
-        //intent.getStringExtra(GET_NAME_ID)?.let { viewModel.getUser(it) }
-       /* val article = args.article
-        webView.apply {
-            webViewClient = WebViewClient()
-            loadUrl(article.url)
-        }*/
+        viewModel.user.observe(viewLifecycleOwner, Observer { displayInfo(it) })
 
-        arguments?.getString(GET_NAME_ID)?.let { Log.d("Message", it) }
+        arguments?.getString(GET_NAME_ID)?.let { viewModel.getUser(it) }
 
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        viewBinding = null
     }
 
     private fun displayInfo(user: User) {
-        //viewBinding!!.toolBar.textAlignment = user.username
-        activity?.let {
-            Glide.with(it.baseContext)
-                .load(user.large)
-                .transform(CircleCrop())
-                .into(viewBinding!!.imvPhoto)
+        with(binding) {
+            activity?.let {
+                Glide.with(it.baseContext)
+                    .load(user.large)
+                    .transform(CircleCrop())
+                    .into(imvPhoto)
+            }
+            txtName.text = user.getFullName()
+            txtGender.text = user.gender
+            txtAge.text = user.age.toString()
+            txtEmail.text = user.email
+            txtStreet.text = user.getFullStreet()
+            txtCity.text = user.city
+            txtCountry.text = user.country
         }
-        viewBinding!!.txtName.text = user.getFullName()
-        viewBinding!!.txtGender.text = user.gender
-        viewBinding!!.txtAge.text = user.age.toString()
-        viewBinding!!.txtAge.text = user.email
-        viewBinding!!.txtStreet.text = user.getFullStreet()
-        viewBinding!!.txtCity.text = user.city
-        viewBinding!!.txtCountry.text = user.country
     }
 
 

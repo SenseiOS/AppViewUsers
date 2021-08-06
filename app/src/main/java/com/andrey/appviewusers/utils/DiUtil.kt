@@ -15,7 +15,7 @@ object DiUtil {
 
     private lateinit var contextProvider: () -> Context
     val userRepository by lazy {
-        UserRepository(appDatabase)
+        UserRepository(api, appDatabase.userDao())
     }
     private val appDatabase by lazy {
         AppDatabase(contextProvider())
