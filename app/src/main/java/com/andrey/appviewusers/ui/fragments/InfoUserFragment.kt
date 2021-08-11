@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.Observer
 import com.andrey.appviewusers.base.BaseFragment
 import com.andrey.appviewusers.databinding.FragmentInfoUserBinding
 import com.andrey.appviewusers.db.User
@@ -21,19 +20,18 @@ class InfoUserFragment : BaseFragment<FragmentInfoUserBinding>() {
         { inflater, container ->
             FragmentInfoUserBinding.inflate(inflater, container, false)
         }
+
     private val viewModel: InfoUserViewModel by lazy {
         createViewModel {
-            InfoUserViewModel(DiUtil.userRepository,arguments?.getString(GET_NAME_ID)?: "")
+            InfoUserViewModel(DiUtil.userRepository, arguments?.getString(GET_NAME_ID) ?: "")
         }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         viewModel.user.observe(viewLifecycleOwner) { displayInfo(it) }
 
-        arguments?.getString(GET_NAME_ID)?.let { viewModel.getUser() }
-
+        viewModel.getUser()
     }
 
     private fun displayInfo(user: User) {
@@ -53,7 +51,6 @@ class InfoUserFragment : BaseFragment<FragmentInfoUserBinding>() {
             txtCountry.text = user.country
         }
     }
-
 
     companion object {
 

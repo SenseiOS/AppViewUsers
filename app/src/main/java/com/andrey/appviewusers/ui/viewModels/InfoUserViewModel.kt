@@ -16,7 +16,6 @@ class InfoUserViewModel(
     private val mutableUser: MutableLiveData<User> = MutableLiveData<User>()
     val user: LiveData<User> = mutableUser
 
-
     fun getUser(){
         viewModelScope.launch {
             userRepository.getUser(userId).let {

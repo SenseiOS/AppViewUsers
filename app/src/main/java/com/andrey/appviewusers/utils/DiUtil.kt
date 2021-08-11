@@ -9,6 +9,7 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
+
 private const val BASE_URL = "https://randomuser.me/api/"
 
 object DiUtil {
@@ -34,12 +35,13 @@ object DiUtil {
             .build()
     }
 
-    val api by lazy {
+    private val api: RetrofitService by lazy {
         retrofitService.create(RetrofitService::class.java)
     }
 
     fun init(context: Context) {
         contextProvider = { context }
     }
+
 
 }

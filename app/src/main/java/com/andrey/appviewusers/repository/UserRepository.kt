@@ -34,7 +34,7 @@ class UserRepository(
 
     private suspend fun getSavedUsers() = userDao.getAll()
 
-    private suspend fun deleteDbUsers() = userDao.deleteResults()
+    suspend fun deleteDbUsers() = userDao.deleteResults()
 
     suspend fun getUser(id: String) = userDao.getUser(id)
 

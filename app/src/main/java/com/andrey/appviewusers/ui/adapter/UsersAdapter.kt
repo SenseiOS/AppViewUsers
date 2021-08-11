@@ -1,18 +1,17 @@
 package com.andrey.appviewusers.ui.adapter
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.andrey.appviewusers.R
 import com.andrey.appviewusers.databinding.UserBinding
 import com.andrey.appviewusers.db.User
-import com.andrey.appviewusers.databinding.FragmentViewUsersBinding
 
-class UsersAdapter (private val clickListener: (User) -> Unit, private val paginationListener: () -> Unit ) :
+class UsersAdapter(
+    private val clickListener: (User) -> Unit,
+    private val paginationListener: () -> Unit
+) :
     ListAdapter<User, UsersAdapter.MyViewHolder>(DiffCallback()) {
 
     private var prefetchCount = 3
@@ -26,7 +25,7 @@ class UsersAdapter (private val clickListener: (User) -> Unit, private val pagin
 
         holder.bind(item, clickListener)
 
-        if(position>= itemCount - prefetchCount) {
+        if (position == itemCount - prefetchCount) {
             paginationListener()
         }
 
@@ -34,8 +33,7 @@ class UsersAdapter (private val clickListener: (User) -> Unit, private val pagin
 
     class MyViewHolder(private val binding: UserBinding) : RecyclerView.ViewHolder(binding.root) {
 
-
-        fun bind (item: User, clickListener: (User) -> Unit) {
+        fun bind(item: User, clickListener: (User) -> Unit) {
             binding.userName.text = item.getFullName()
 
             binding.root.setOnClickListener {

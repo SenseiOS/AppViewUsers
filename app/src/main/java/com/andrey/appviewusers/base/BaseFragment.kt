@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.viewbinding.ViewBinding
+import com.andrey.appviewusers.R
 
 abstract class BaseFragment< VB : ViewBinding> : Fragment() {
 
@@ -26,5 +27,13 @@ abstract class BaseFragment< VB : ViewBinding> : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         bindingInternal = null
+    }
+
+    protected fun replaceFragment(fragment: Fragment) {
+        activity?.supportFragmentManager?.beginTransaction()?.apply {
+            replace(R.id.container_fragments, fragment)
+            addToBackStack(null)
+            commit()
+        }
     }
 }

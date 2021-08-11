@@ -13,10 +13,9 @@ class MainViewModel(
     private val userRepository: UserRepository
 ) : ViewModel() {
 
-
     private val mutableUsers: MutableLiveData<Resource<List<User>>> = MutableLiveData()
     val users: LiveData<Resource<List<User>>> = mutableUsers
-    private var userResponse: Boolean = false
+    private var checkRefresh: Boolean = false
 
 
     init {
@@ -25,40 +24,38 @@ class MainViewModel(
 
     fun getUsers() {
         viewModelScope.launch {
+            val users = mutableUsers.value?.data ?: listOf()
             mutableUsers.postValue(Resource.Loading())
             try {
-               // val response = userRepository.getUsers()
-                //if (userResponse == null) {
-                 //   userResponse = response.toMutableList()
-               // } else {
-               //     userResponse?.addAll(response)
-
-              //  }
-                 // if(!userResponse){
-                      mutableUsers.postValue(Resource.Success(userRepository.getUsers()))
-                 // }
-               // else
-               //   {
-
-                 // }
-
-               // userResponse?.let { mutableUsers.postValue(Resource.Success(it)) }
-                //saveUsers(response)
+                if (!checkRefresh) {
+                    val newUserResponse = userRepository.getUsers()
+                    mutableUsers.postValue(
+                        Resource.Success(
+                            users + newUserResponse
+                        )
+                    )
+                    userRepository.insert(newUserResponse)
+                } else {
+                   userRepository.deleteDbUsers()
+                    mutableUsers.postValue(null)
+                    checkRefresh = false
+                    getUsers()
+                }
             } catch (error: Exception) {
                 mutableUsers.postValue(Resource.Error(error.toString()))
             }
         }
     }
 
-    private suspend fun saveUsers(users: List<User>) =
-        userRepository.insert(users)
-
-
-    fun refreshUsers() {
-        userResponse//Изменить на boolean
-
-
-        getUsers()
+    fun refreshUsers(checkInternet: Boolean) {
+        viewModelScope.launch {
+            if (checkInternet) {
+                checkRefresh = true
+                getUsers()
+            }
+        }
     }
 
+
 }
+

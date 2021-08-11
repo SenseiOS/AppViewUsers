@@ -1,14 +1,13 @@
 package com.andrey.appviewusers.ui.fragments
 
+import android.content.Context.CONNECTIVITY_SERVICE
+import android.net.ConnectivityManager
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.andrey.appviewusers.R
 import com.andrey.appviewusers.base.BaseFragment
 import com.andrey.appviewusers.databinding.FragmentViewUsersBinding
 import com.andrey.appviewusers.ui.adapter.UsersAdapter
@@ -24,7 +23,20 @@ class ViewUsersFragment : BaseFragment<FragmentViewUsersBinding>() {
             MainViewModel(DiUtil.userRepository)
         }
     }
-    lateinit var usersAdapter: UsersAdapter
+
+    private val usersAdapter: UsersAdapter by lazy{
+         UsersAdapter(
+            clickListener = {
+                replaceFragment(InfoUserFragment.newInstance(it.uuid))
+            },
+            paginationListener = {
+                showProgressBar()
+                viewModel.getUsers()
+                hideProgressBar()
+
+            }
+         )
+    }
 
     override val viewBindingProvider: (LayoutInflater, ViewGroup?) -> FragmentViewUsersBinding =
         { inflater, container ->
@@ -36,8 +48,7 @@ class ViewUsersFragment : BaseFragment<FragmentViewUsersBinding>() {
 
         setupRecyclerView()
 
-
-        viewModel.users.observe(viewLifecycleOwner, Observer { response ->
+        viewModel.users.observe(viewLifecycleOwner, { response ->
             when (response) {
                 is Resource.Success -> {
                     hideProgressBar()
@@ -50,7 +61,6 @@ class ViewUsersFragment : BaseFragment<FragmentViewUsersBinding>() {
                     response.message?.let { message ->
                         Log.e("App", "An error occured: $message")
                     }
-                    //adapter.submitList(viewModel.getSavedUser())
                 }
                 is Resource.Loading -> {
                     showProgressBar()
@@ -60,31 +70,13 @@ class ViewUsersFragment : BaseFragment<FragmentViewUsersBinding>() {
 
         with(binding) {
             swipeRefreshLayout.setOnRefreshListener {
-
-                viewModel.refreshUsers()
-
+                viewModel.refreshUsers(isOnline())
                 swipeRefreshLayout.isRefreshing = false
             }
         }
     }
 
     private fun setupRecyclerView() {
-
-        usersAdapter = UsersAdapter(
-            clickListener = { //Вынести в Base fragment
-                activity?.supportFragmentManager?.beginTransaction()?.apply {
-                    replace(R.id.container_fragments, InfoUserFragment.newInstance(it.uuid))
-                    addToBackStack(null)
-                    commit()
-                }
-            },
-            paginationListener = {
-                showProgressBar()
-                viewModel.getUsers()
-                hideProgressBar()
-
-            }
-        )
         binding.rvUsers.apply {
             layoutManager = LinearLayoutManager(context)
             adapter = usersAdapter
@@ -100,10 +92,15 @@ class ViewUsersFragment : BaseFragment<FragmentViewUsersBinding>() {
         binding.paginationProgressBar.visibility = View.VISIBLE
     }
 
+    private fun isOnline(): Boolean {
+        val connectivityManager =
+            context?.getSystemService(CONNECTIVITY_SERVICE) as ConnectivityManager
+        val networkInfo = connectivityManager.activeNetworkInfo
+        return networkInfo != null && networkInfo.isConnected
+    }
+
     companion object {
-
         fun newInstance() = ViewUsersFragment()
-
     }
 
 }
